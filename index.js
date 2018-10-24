@@ -1,14 +1,22 @@
-var http = require('http');
+const express = require('express');
+const app = express();
+const path = require('path')
 
-var server = http.createServer(function(request, response) {
+app.use(express.static('public')) // Serves up static files
 
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello Azure!");
-
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 var port = process.env.PORT || 1337;
-server.listen(port);
+
+app.listen(port, (err) => {
+  if (err) {
+    return console.log('something bad happened', err)
+  }
+
+  console.log(`server is listening on ${port}`)
+})
 
 console.log("Server running at http://localhost:%d", port);
 
